@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postgrados USACH | MauricIA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        :root {
+            --usach-orange: #ea7600;
+            --usach-dark: #333;
+            --bg-chat: #f4f4f9;
+            --user-bubble: #ea7600;
+            --bot-bubble: #ffffff;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #eef2f5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background-color: var(--usach-dark);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 4px solid var(--usach-orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .header h1 { margin: 0; font-size: 1.2rem; }
+        .status-dot { height: 10px; width: 10px; background-color: #00ff00; border-radius: 50%; display: inline-block; }
+
+        #messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: var(--bg-chat);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 15px;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .user {
+            align-self: flex-end;
+            background-color: var(--user-bubble);
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+
+        .bot {
+            align-self: flex-start;
+            background-color: var(--bot-bubble);
+            color: var(--usach-dark);
+            border-bottom-left-radius: 2px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* Estilos Markdown */
+        .bot ul { padding-left: 20px; margin: 5px 0; }
+        .bot p { margin: 5px 0; }
+        .bot a { color: var(--usach-orange); font-weight: bold; text-decoration: none; }
+        .bot strong { color: #000; }
+
+        .input-area {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #ddd;
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        input:focus { border-color: var(--usach-orange); }
+
+        button {
+            background-color: var(--usach-orange);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.1s;
+        }
+
+        button:active { transform: scale(0.95); }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+
+        .typing-indicator {
+            display: none;
+            font-style: italic;
+            color: #888;
+            font-size: 0.8rem;
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* Cursor parpadeante para el efecto typing */
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            background-color: var(--usach-orange);
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="header">
+            <div class="status-dot"></div>
+            <h1>Asistente Postgrados USACH</h1>
+        </div>
+
+        <div id="messages">
+            <div class="message bot">
+                ¡Hola! 👋 Soy MauricIA.<br>Puedo responder dudas sobre Aranceles, Mallas y Requisitos.
+            </div>
+        </div>
+
+        <div class="typing-indicator" id="loader">MauricIA está escribiendo...</div>
+
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Escribe tu consulta aquí..." autocomplete="off">
+            <button onclick="sendMessage()" id="sendBtn">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        const inputField = document.getElementById("userInput");
+        const messagesDiv = document.getElementById("messages");
+        const loader = document.getElementById("loader");
+        const sendBtn = document.getElementById("sendBtn");
+
+        // 🏠 MODO DESARROLLO (Tu PC)
+        // const API_URL = "http://localhost:8000/chat";
+
+        // ☁️ MODO PRODUCCIÓN (Render)
+        // Apenas se ponga en verde, confirmas si tu link es este:
+        const API_URL = "https://backend-mauricia.onrender.com/chat";
+
+        inputField.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") sendMessage();
+        });
+
+        async function sendMessage() {
+            const text = inputField.value.trim();
+            if (!text) return;
+
+            // 1. Mostrar mensaje Usuario
+            addMessage(text, 'user');
+            inputField.value = "";
+            inputField.disabled = true;
+            sendBtn.disabled = true;
+            loader.style.display = "block";
+
+            try {
+                // 2. Pedir respuesta a Python
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ mensaje: text })
+                });
+
+                if (!response.ok) throw new Error("Error API");
+                const data = await response.json();
+                
+                // 3. Mostrar respuesta Bot CON efecto typing
+                addMessage(data.respuesta, 'bot', true);
+
+            } catch (error) {
+                addMessage("⚠️ Error de conexión. Verifica que api.py esté corriendo.", 'bot');
+            } finally {
+                inputField.disabled = false;
+                sendBtn.disabled = false;
+                loader.style.display = "none";
+                inputField.focus();
+            }
+        }
+
+        function addMessage(text, sender, animate = false) {
+            const div = document.createElement("div");
+            div.className = `message ${sender}`;
+            messagesDiv.appendChild(div);
+
+            if (sender === 'bot' && animate) {
+                // Si es el bot y queremos animación, llamamos a la función mágica
+                typeWriter(div, text);
+            } else {
+                // Si es el usuario o error, mostrar de golpe
+                div.innerHTML = sender === 'bot' ? marked.parse(text) : text;
+                scrollToBottom();
+            }
+        }
+
+        // --- LA MAGIA DEL EFECTO DE ESCRITURA ---
+        function typeWriter(element, text) {
+            let i = 0;
+            const speed = 20; // Velocidad en milisegundos (más bajo = más rápido)
+            
+            // Creamos un cursor visual
+            element.innerHTML = '<span class="cursor">▌</span>';
+            
+            function type() {
+                if (i < text.length) {
+                    // Escribimos letra por letra ANTES del cursor
+                    // Nota: Mientras escribe, es texto plano para no romper HTML
+                    element.innerHTML = text.substring(0, i + 1) + '<span class="cursor">▌</span>';
+                    i++;
+                    scrollToBottom();
+                    setTimeout(type, speed);
+                } else {
+                    // FIN DE LA ESCRITURA:
+                    // 1. Quitamos el cursor
+                    // 2. Convertimos el Markdown (**negrita**) a HTML real
+                    element.innerHTML = marked.parse(text);
+                    scrollToBottom();
+                }
+            }
+            type();
+        }
+
+        function scrollToBottom() {
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+    </script>
+
+</body>
+</html>
