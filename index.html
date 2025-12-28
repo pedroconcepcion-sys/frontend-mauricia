@@ -14,6 +14,7 @@
             --bg-chat: #f4f4f9;
             --user-bubble: #ea7600;
             --bot-bubble: #ffffff;
+            --dot-color: #b0b0b0; /* Color gris de los puntitos */
         }
 
         body {
@@ -123,16 +124,40 @@
         button:active { transform: scale(0.95); }
         button:disabled { background-color: #ccc; cursor: not-allowed; }
 
+        /* --- AQUÍ ESTÁ LA MAGIA DE LOS PUNTITOS (Typing Indicator) --- */
         .typing-indicator {
-            display: none;
-            font-style: italic;
-            color: #888;
-            font-size: 0.8rem;
-            margin-left: 20px;
+            display: none; /* Oculto por defecto */
+            background-color: var(--bot-bubble);
+            padding: 15px 20px;
+            border-radius: 20px;
+            border-bottom-left-radius: 2px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            width: fit-content;
             margin-bottom: 10px;
+            align-self: flex-start; /* Alineado a la izquierda */
+            margin-left: 20px; /* Margen para alinearse con los mensajes del bot */
         }
 
-        /* Cursor parpadeante para el efecto typing */
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: var(--dot-color);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+            margin: 0 2px;
+        }
+
+        /* Retraso para crear la ola */
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* Cursor para el efecto de escritura del texto final */
         .cursor {
             display: inline-block;
             width: 8px;
@@ -140,6 +165,7 @@
             animation: blink 1s infinite;
         }
         @keyframes blink { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
+
     </style>
 </head>
 <body>
@@ -156,7 +182,11 @@
             </div>
         </div>
 
-        <div class="typing-indicator" id="loader">MauricIA está escribiendo...</div>
+        <div class="typing-indicator" id="loader">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
 
         <div class="input-area">
             <input type="text" id="userInput" placeholder="Escribe tu consulta aquí..." autocomplete="off">
@@ -169,12 +199,11 @@
         const messagesDiv = document.getElementById("messages");
         const loader = document.getElementById("loader");
         const sendBtn = document.getElementById("sendBtn");
-
-        // 🏠 MODO DESARROLLO (Tu PC)
+        
+        // ❌ BORRA ESTO:
         // const API_URL = "http://localhost:8000/chat";
 
-        // ☁️ MODO PRODUCCIÓN (Render)
-        // Apenas se ponga en verde, confirmas si tu link es este:
+        // ✅ PON ESTO (Tu enlace de producción):
         const API_URL = "https://backend-mauricia.onrender.com/chat";
 
         inputField.addEventListener("keypress", function(event) {
@@ -185,15 +214,16 @@
             const text = inputField.value.trim();
             if (!text) return;
 
-            // 1. Mostrar mensaje Usuario
             addMessage(text, 'user');
             inputField.value = "";
             inputField.disabled = true;
             sendBtn.disabled = true;
+            
+            // Mostrar la animación de los puntitos
             loader.style.display = "block";
+            scrollToBottom();
 
             try {
-                // 2. Pedir respuesta a Python
                 const response = await fetch(API_URL, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -203,15 +233,16 @@
                 if (!response.ok) throw new Error("Error API");
                 const data = await response.json();
                 
-                // 3. Mostrar respuesta Bot CON efecto typing
+                // Ocultar puntitos antes de mostrar respuesta
+                loader.style.display = "none";
                 addMessage(data.respuesta, 'bot', true);
 
             } catch (error) {
-                addMessage("⚠️ Error de conexión. Verifica que api.py esté corriendo.", 'bot');
+                loader.style.display = "none";
+                addMessage("⚠️ Error de conexión.", 'bot');
             } finally {
                 inputField.disabled = false;
                 sendBtn.disabled = false;
-                loader.style.display = "none";
                 inputField.focus();
             }
         }
@@ -222,35 +253,25 @@
             messagesDiv.appendChild(div);
 
             if (sender === 'bot' && animate) {
-                // Si es el bot y queremos animación, llamamos a la función mágica
                 typeWriter(div, text);
             } else {
-                // Si es el usuario o error, mostrar de golpe
                 div.innerHTML = sender === 'bot' ? marked.parse(text) : text;
                 scrollToBottom();
             }
         }
 
-        // --- LA MAGIA DEL EFECTO DE ESCRITURA ---
         function typeWriter(element, text) {
             let i = 0;
-            const speed = 20; // Velocidad en milisegundos (más bajo = más rápido)
-            
-            // Creamos un cursor visual
+            const speed = 20; 
             element.innerHTML = '<span class="cursor">▌</span>';
             
             function type() {
                 if (i < text.length) {
-                    // Escribimos letra por letra ANTES del cursor
-                    // Nota: Mientras escribe, es texto plano para no romper HTML
                     element.innerHTML = text.substring(0, i + 1) + '<span class="cursor">▌</span>';
                     i++;
                     scrollToBottom();
                     setTimeout(type, speed);
                 } else {
-                    // FIN DE LA ESCRITURA:
-                    // 1. Quitamos el cursor
-                    // 2. Convertimos el Markdown (**negrita**) a HTML real
                     element.innerHTML = marked.parse(text);
                     scrollToBottom();
                 }
@@ -262,6 +283,5 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
     </script>
-
 </body>
 </html>
