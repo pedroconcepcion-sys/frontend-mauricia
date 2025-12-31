@@ -1,47 +1,36 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Postgrados USACH | MauricIA</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
-      rel="stylesheet"
-    />
-    <link href="css/style.css" defer rel="stylesheet" />
-  </head>
-  <body>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
     <div class="chat-container">
-      <div class="header">
-        <div class="status-dot"></div>
-        <h1>Asistente Postgrados USACH</h1>
-      </div>
-
-      <div id="messages">
-        <div class="message bot">
-          ¡Hola! 👋 Soy MauricIA.<br />Puedo responder dudas sobre Aranceles,
-          Mallas y Requisitos.
+        <div class="header">
+            <div class="status-dot"></div>
+            <h1>Asistente Postgrados USACH</h1>
         </div>
-      </div>
 
-      <div class="typing-indicator" id="loader">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
+        <div id="messages">
+            <div class="message bot">
+                ¡Hola! 👋 Soy MauricIA.<br />Puedo responder dudas sobre Aranceles, Mallas y Requisitos.
+            </div>
+        </div>
 
-      <div class="input-area">
-        <input
-          type="text"
-          id="userInput"
-          placeholder="Escribe tu consulta aquí..."
-          autocomplete="off"
-        />
-        <button onclick="sendMessage()" id="sendBtn">Enviar</button>
-      </div>
+        <div class="typing-indicator" id="loader" style="display: none;">
+            <span></span><span></span><span></span>
+        </div>
+
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Escribe tu consulta aquí..." autocomplete="off" />
+            <button onclick="sendMessage()" id="sendBtn">Enviar</button>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="js/main.js" defer></script>
-  </body>
+</body>
 </html>

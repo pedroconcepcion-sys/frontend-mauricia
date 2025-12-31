@@ -3,82 +3,83 @@ const messagesDiv = document.getElementById("messages");
 const loader = document.getElementById("loader");
 const sendBtn = document.getElementById("sendBtn");
 
-// ✅ PON ESTO (Tu enlace de producción):
 const API_URL = "https://backend-mauricia.onrender.com/chat";
 
-inputField.addEventListener("keypress", function (event) {
-  if (event.key === "Enter") sendMessage();
+inputField.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") sendMessage();
 });
 
 async function sendMessage() {
-  const text = inputField.value.trim();
-  if (!text) return;
+    const text = inputField.value.trim();
+    if (!text) return;
 
-  addMessage(text, "user");
-  inputField.value = "";
-  inputField.disabled = true;
-  sendBtn.disabled = true;
+    // 1. Mostrar mensaje del usuario
+    addMessage(text, "user");
+    inputField.value = "";
+    inputField.disabled = true;
+    sendBtn.disabled = true;
 
-  // Mostrar la animación de los puntitos
-  loader.style.display = "block";
-  scrollToBottom();
+    // 2. Mostrar loader
+    loader.style.display = "block";
+    scrollToBottom();
 
-  try {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mensaje: text }),
-    });
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ mensaje: text }),
+        });
 
-    if (!response.ok) throw new Error("Error API");
-    const data = await response.json();
+        if (!response.ok) throw new Error("Error en la respuesta del servidor");
+        
+        const data = await response.json();
+        loader.style.display = "none";
 
-    // Ocultar puntitos antes de mostrar respuesta
-    loader.style.display = "none";
-    addMessage(data.respuesta, "bot", true);
-  } catch (error) {
-    loader.style.display = "none";
-    addMessage("⚠️ Error de conexión.", "bot");
-  } finally {
-    inputField.disabled = false;
-    sendBtn.disabled = false;
-    inputField.focus();
-  }
+        // 3. Mostrar respuesta de MauricIA con efecto máquina de escribir
+        addMessage(data.respuesta, "bot", true);
+
+    } catch (error) {
+        loader.style.display = "none";
+        addMessage("⚠️ Lo siento, no pude conectarme. El servidor podría estar despertando, intenta de nuevo en unos segundos.", "bot");
+    } finally {
+        inputField.disabled = false;
+        sendBtn.disabled = false;
+        inputField.focus();
+    }
 }
 
 function addMessage(text, sender, animate = false) {
-  const div = document.createElement("div");
-  div.className = `message ${sender}`;
-  messagesDiv.appendChild(div);
+    const div = document.createElement("div");
+    div.className = `message ${sender}`;
+    messagesDiv.appendChild(div);
 
-  if (sender === "bot" && animate) {
-    typeWriter(div, text);
-  } else {
-    div.innerHTML = sender === "bot" ? marked.parse(text) : text;
-    scrollToBottom();
-  }
+    if (sender === "bot" && animate) {
+        typeWriter(div, text);
+    } else {
+        // Usar marked para parsear Markdown (negritas, listas, etc)
+        div.innerHTML = sender === "bot" ? marked.parse(text) : text;
+        scrollToBottom();
+    }
 }
 
 function typeWriter(element, text) {
-  let i = 0;
-  const speed = 20;
-  element.innerHTML = '<span class="cursor">▌</span>';
-
-  function type() {
-    if (i < text.length) {
-      element.innerHTML =
-        text.substring(0, i + 1) + '<span class="cursor">▌</span>';
-      i++;
-      scrollToBottom();
-      setTimeout(type, speed);
-    } else {
-      element.innerHTML = marked.parse(text);
-      scrollToBottom();
+    let i = 0;
+    const speed = 15; // Velocidad en ms
+    
+    function type() {
+        if (i < text.length) {
+            element.innerHTML = text.substring(0, i + 1) + '<span class="cursor">▌</span>';
+            i++;
+            scrollToBottom();
+            setTimeout(type, speed);
+        } else {
+            element.innerHTML = marked.parse(text); // Al terminar, renderiza Markdown completo
+            scrollToBottom();
+        }
     }
-  }
-  type();
+    type();
 }
 
 function scrollToBottom() {
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
 }
