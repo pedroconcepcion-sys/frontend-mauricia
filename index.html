@@ -1,287 +1,47 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Postgrados USACH | MauricIA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-    <style>
-        :root {
-            --usach-orange: #ea7600;
-            --usach-dark: #333;
-            --bg-chat: #f4f4f9;
-            --user-bubble: #ea7600;
-            --bot-bubble: #ffffff;
-            --dot-color: #b0b0b0; /* Color gris de los puntitos */
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #eef2f5;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        .chat-container {
-            width: 100%;
-            max-width: 600px;
-            background: white;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-
-        .header {
-            background-color: var(--usach-dark);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            border-bottom: 4px solid var(--usach-orange);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .header h1 { margin: 0; font-size: 1.2rem; }
-        .status-dot { height: 10px; width: 10px; background-color: #00ff00; border-radius: 50%; display: inline-block; }
-
-        #messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            background-color: var(--bg-chat);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .message {
-            max-width: 85%;
-            padding: 12px 16px;
-            border-radius: 15px;
-            line-height: 1.5;
-            font-size: 0.95rem;
-            position: relative;
-            word-wrap: break-word;
-        }
-
-        .user {
-            align-self: flex-end;
-            background-color: var(--user-bubble);
-            color: white;
-            border-bottom-right-radius: 2px;
-        }
-
-        .bot {
-            align-self: flex-start;
-            background-color: var(--bot-bubble);
-            color: var(--usach-dark);
-            border-bottom-left-radius: 2px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        /* Estilos Markdown */
-        .bot ul { padding-left: 20px; margin: 5px 0; }
-        .bot p { margin: 5px 0; }
-        .bot a { color: var(--usach-orange); font-weight: bold; text-decoration: none; }
-        .bot strong { color: #000; }
-
-        .input-area {
-            padding: 15px;
-            background: white;
-            border-top: 1px solid #ddd;
-            display: flex;
-            gap: 10px;
-        }
-
-        input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 25px;
-            outline: none;
-            transition: border 0.3s;
-        }
-
-        input:focus { border-color: var(--usach-orange); }
-
-        button {
-            background-color: var(--usach-orange);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.1s;
-        }
-
-        button:active { transform: scale(0.95); }
-        button:disabled { background-color: #ccc; cursor: not-allowed; }
-
-        /* --- AQUÍ ESTÁ LA MAGIA DE LOS PUNTITOS (Typing Indicator) --- */
-        .typing-indicator {
-            display: none; /* Oculto por defecto */
-            background-color: var(--bot-bubble);
-            padding: 15px 20px;
-            border-radius: 20px;
-            border-bottom-left-radius: 2px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            width: fit-content;
-            margin-bottom: 10px;
-            align-self: flex-start; /* Alineado a la izquierda */
-            margin-left: 20px; /* Margen para alinearse con los mensajes del bot */
-        }
-
-        .typing-indicator span {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background-color: var(--dot-color);
-            border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out both;
-            margin: 0 2px;
-        }
-
-        /* Retraso para crear la ola */
-        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
-        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
-        
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
-        }
-
-        /* Cursor para el efecto de escritura del texto final */
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            background-color: var(--usach-orange);
-            animation: blink 1s infinite;
-        }
-        @keyframes blink { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
-
-    </style>
-</head>
-<body>
-
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="css/style.css" defer rel="stylesheet" />
+  </head>
+  <body>
     <div class="chat-container">
-        <div class="header">
-            <div class="status-dot"></div>
-            <h1>Asistente Postgrados USACH</h1>
-        </div>
+      <div class="header">
+        <div class="status-dot"></div>
+        <h1>Asistente Postgrados USACH</h1>
+      </div>
 
-        <div id="messages">
-            <div class="message bot">
-                ¡Hola! 👋 Soy MauricIA.<br>Puedo responder dudas sobre Aranceles, Mallas y Requisitos.
-            </div>
+      <div id="messages">
+        <div class="message bot">
+          ¡Hola! 👋 Soy MauricIA.<br />Puedo responder dudas sobre Aranceles,
+          Mallas y Requisitos.
         </div>
+      </div>
 
-        <div class="typing-indicator" id="loader">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+      <div class="typing-indicator" id="loader">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
 
-        <div class="input-area">
-            <input type="text" id="userInput" placeholder="Escribe tu consulta aquí..." autocomplete="off">
-            <button onclick="sendMessage()" id="sendBtn">Enviar</button>
-        </div>
+      <div class="input-area">
+        <input
+          type="text"
+          id="userInput"
+          placeholder="Escribe tu consulta aquí..."
+          autocomplete="off"
+        />
+        <button onclick="sendMessage()" id="sendBtn">Enviar</button>
+      </div>
     </div>
 
-    <script>
-        const inputField = document.getElementById("userInput");
-        const messagesDiv = document.getElementById("messages");
-        const loader = document.getElementById("loader");
-        const sendBtn = document.getElementById("sendBtn");
-        
-        // ❌ BORRA ESTO:
-        // const API_URL = "http://localhost:8000/chat";
-
-        // ✅ PON ESTO (Tu enlace de producción):
-        const API_URL = "https://backend-mauricia.onrender.com/chat";
-
-        inputField.addEventListener("keypress", function(event) {
-            if (event.key === "Enter") sendMessage();
-        });
-
-        async function sendMessage() {
-            const text = inputField.value.trim();
-            if (!text) return;
-
-            addMessage(text, 'user');
-            inputField.value = "";
-            inputField.disabled = true;
-            sendBtn.disabled = true;
-            
-            // Mostrar la animación de los puntitos
-            loader.style.display = "block";
-            scrollToBottom();
-
-            try {
-                const response = await fetch(API_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ mensaje: text })
-                });
-
-                if (!response.ok) throw new Error("Error API");
-                const data = await response.json();
-                
-                // Ocultar puntitos antes de mostrar respuesta
-                loader.style.display = "none";
-                addMessage(data.respuesta, 'bot', true);
-
-            } catch (error) {
-                loader.style.display = "none";
-                addMessage("⚠️ Error de conexión.", 'bot');
-            } finally {
-                inputField.disabled = false;
-                sendBtn.disabled = false;
-                inputField.focus();
-            }
-        }
-
-        function addMessage(text, sender, animate = false) {
-            const div = document.createElement("div");
-            div.className = `message ${sender}`;
-            messagesDiv.appendChild(div);
-
-            if (sender === 'bot' && animate) {
-                typeWriter(div, text);
-            } else {
-                div.innerHTML = sender === 'bot' ? marked.parse(text) : text;
-                scrollToBottom();
-            }
-        }
-
-        function typeWriter(element, text) {
-            let i = 0;
-            const speed = 20; 
-            element.innerHTML = '<span class="cursor">▌</span>';
-            
-            function type() {
-                if (i < text.length) {
-                    element.innerHTML = text.substring(0, i + 1) + '<span class="cursor">▌</span>';
-                    i++;
-                    scrollToBottom();
-                    setTimeout(type, speed);
-                } else {
-                    element.innerHTML = marked.parse(text);
-                    scrollToBottom();
-                }
-            }
-            type();
-        }
-
-        function scrollToBottom() {
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-    </script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="js/main.js" defer></script>
+  </body>
 </html>
