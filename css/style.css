@@ -1,5 +1,5 @@
 :root {
-    --usach-blue: #003057;
+    --usach-blue: #1aada3;
     --usach-orange: #E87722;
     --bg-light: #f4f7f6;
     --bot-bubble: #e9ecef;
@@ -21,8 +21,8 @@ body {
 /* Contenedor Principal */
 .chat-container {
     width: 100%;
-    max-width: 500px;
-    height: 90vh;
+    max-width: 600px;
+    height: 95vh;
     background: white;
     display: flex;
     flex-direction: column;
@@ -35,17 +35,25 @@ body {
 .header {
     background: var(--usach-blue);
     color: white;
-    padding: 20px;
+    padding: 10px 20px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
 }
 
-.status-dot {
-    width: 10px; height: 10px;
-    background: #2ecc71;
-    border-radius: 50%;
-    box-shadow: 0 0 8px #2ecc71;
+.header-logo {
+    height: 45px;      /* Altura fija para no romper el banner */
+    width: auto;       /* Mantiene la proporción original */
+    border-radius: 5px; /* Opcional: redondea un poco las esquinas del logo */
+    object-fit: contain;
+}
+
+.bot-icon {
+    font-size: 1.5rem; /* Ajusta el tamaño del emoji */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 h1 { font-size: 1.2rem; margin: 0; }
@@ -74,7 +82,7 @@ h1 { font-size: 1.2rem; margin: 0; }
 .bot {
     align-self: flex-start;
     background-color: var(--bot-bubble);
-    color: var(--usach-blue);
+    color: #000000 !important;
     border-bottom-left-radius: 4px;
 }
 
@@ -134,3 +142,50 @@ button:hover { background: var(--usach-orange); }
     color: var(--usach-orange);
 }
 @keyframes blink { 50% { opacity: 0; } }
+
+.chat-footer {
+    padding: 1px;
+    background-color: #f8f9fa; 
+    border-top: 1px solid #eee;
+    text-align: center;
+    font-size: 0.6rem; 
+    color: #666; 
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+    
+}
+
+.chat-footer p {
+    margin: 1px 0;
+   
+}
+
+.chat-footer strong {
+    color: #333; 
+}
+
+.my_email {
+    /* 1. Separación visual de la dirección */
+    margin-top: 15px !important;
+    padding-top: 5px;
+    
+    /* 2. Estilo de texto */
+    font-size: 0.65rem;
+    color: #777; /* Un gris intermedio */
+    text-transform: none !important; /* Aseguramos minúsculas */
+    letter-spacing: 0.2px;
+}
+
+.my_email strong {
+    /* Usamos tu color turquesa para destacar el rol */
+    color: #1aada3; 
+    font-weight: 700;
+}
+
+
+.my_email:hover {
+    color: #000; /* Se oscurece al pasar el mouse */
+    cursor: default;
+    transition: color 0.3s ease;
+}
+

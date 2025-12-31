@@ -1,36 +1,51 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Postgrados USACH | MauricIA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
+  </head>
+  <body>
     <div class="chat-container">
-        <div class="header">
-            <div class="status-dot"></div>
-            <h1>Asistente Postgrados USACH</h1>
-        </div>
+      <div class="header">
+        <img src="img/logoVipo.jpg" alt="Logo Vipo" class="header-logo" />
+        <span class="bot-icon">🤖</span>
+        <h1>Asistente Postgrados: MauricIA</h1>
+      </div>
 
-        <div id="messages">
-            <div class="message bot">
-                ¡Hola! 👋 Soy MauricIA.<br />Puedo responder dudas sobre Aranceles, Mallas y Requisitos.
-            </div>
+      <div id="messages">
+        <div class="message bot">
+          ¡Hola! 👋 Soy MauricIA, tu asistente de postgrados de la Universidad
+          de Santiago de Chile (USACH).<br />- Puedo ayudarte con algunas
+          consultas como por ej. aranceles, mallas de programas, matrículas,
+          requisitos de programas, etc....
         </div>
+      </div>
 
-        <div class="typing-indicator" id="loader" style="display: none;">
-            <span></span><span></span><span></span>
-        </div>
+      <div class="typing-indicator" id="loader" style="display: none">
+        <span></span><span></span><span></span>
+      </div>
 
-        <div class="input-area">
-            <input type="text" id="userInput" placeholder="Escribe tu consulta aquí..." autocomplete="off" />
-            <button onclick="sendMessage()" id="sendBtn">Enviar</button>
-        </div>
+      <div class="input-area">
+        <input
+          type="text"
+          id="userInput"
+          placeholder="Escribe tu consulta aquí..."
+          autocomplete="off"
+        />
+        <button onclick="sendMessage()" id="sendBtn">Enviar</button>
+      </div>
+      <footer class="chat-footer">
+        <p class="my_email"><strong>Creado por:</strong> pedro.concepcion@usach.cl</p>
+      </footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="js/main.js" defer></script>
-</body>
+  </body>
 </html>
