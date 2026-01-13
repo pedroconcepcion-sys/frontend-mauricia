@@ -189,3 +189,27 @@ button:hover { background: var(--usach-orange); }
     transition: color 0.3s ease;
 }
 
+.suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.suggestion-btn {
+    background-color: #f0f0f0;
+    border: 1px solid #dcdcdc;
+    border-radius: 15px;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+}
+
+.suggestion-btn:hover {
+    background-color: #ea7600; /* Naranja USACH */
+    color: white;
+    border-color: #ea7600;
+}

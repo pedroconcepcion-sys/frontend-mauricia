@@ -10,6 +10,16 @@ inputField.addEventListener("keypress", (e) => {
     if (e.key === "Enter") sendMessage();
 });
 
+function sendQuickQuery(query) {
+    const input = document.getElementById("userInput");
+    const sendBtn = document.getElementById("sendBtn");
+
+    // 1. Ponemos el texto en el input
+    input.value = query;
+    // 2. Simulamos el click en el botón de enviar
+    sendMessage(); 
+}
+
 async function sendMessage() {
     const text = inputField.value.trim();
     if (!text) return;

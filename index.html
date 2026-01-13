@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Postgrados USACH | MauricIA</title>
-    <link rel="icon" href="img/-robot_86875.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="img/-robot_86875.ico" type="image/x-icon">
+    <link rel="icon" href="img/-robot_86875.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="img/-robot_86875.ico" type="image/x-icon" />
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap"
       rel="stylesheet"
@@ -22,10 +22,36 @@
 
       <div id="messages">
         <div class="message bot">
-          ¡Hola! 👋 Soy MauricIA, tu asistente de postgrados de la Universidad
-          de Santiago de Chile (USACH).<br />- Puedo ayudarte con algunas
-          consultas como por ej. aranceles, mallas de programas, matrículas,
-          requisitos de programas, etc....
+          ¡Hola! 👋 Soy MauricIA, tu asistente de postgrados de la USACH.<br />
+          Puedo ayudarte con aranceles, mallas, becas y más.
+          <br /><br />
+          <strong>Consultas frecuentes:</strong>
+          <div class="suggestions">
+            <button
+              class="suggestion-btn"
+              onclick="sendQuickQuery('¿Qué becas de arancel existen?')"
+            >
+              ¿Qué becas de arancel existen?
+            </button>
+            <button
+              class="suggestion-btn"
+              onclick="sendQuickQuery('Ver malla del Magíster en Informática')"
+            >
+              Ver malla del Magíster en Informática
+            </button>
+            <button
+              class="suggestion-btn"
+              onclick="sendQuickQuery('¿Cuáles son los requisitos de postulación?')"
+            >
+              ¿Requisitos de postulación?
+            </button>
+            <button
+              class="suggestion-btn"
+              onclick="sendQuickQuery('¿Hay becas para extranjeros?')"
+            >
+              ¿Becas para extranjeros?
+            </button>
+          </div>
         </div>
       </div>
 
@@ -43,7 +69,9 @@
         <button onclick="sendMessage()" id="sendBtn">Enviar</button>
       </div>
       <footer class="chat-footer">
-        <p class="my_email"><strong>Creado por:</strong> pedro.concepcion@usach.cl</p>
+        <p class="my_email">
+          <strong>Creado por:</strong> pedro.concepcion@usach.cl
+        </p>
       </footer>
     </div>
 
