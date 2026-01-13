@@ -4,6 +4,7 @@ const loader = document.getElementById("loader");
 const sendBtn = document.getElementById("sendBtn");
 
 const API_URL = "https://backend-mauricia.onrender.com/chat";
+//const API_URL = "http://127.0.0.1:8000/chat";
 
 inputField.addEventListener("keypress", (e) => {
     if (e.key === "Enter") sendMessage();
