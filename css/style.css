@@ -1,215 +1,240 @@
 :root {
-    --usach-blue: #1aada3;
-    --usach-orange: #1aada3;
-    --bg-light: #f4f7f6;
-    --bot-bubble: #e9ecef;
-    --text-dark: #333;
+  --usach-blue: #1aada3;
+  --usach-orange: #1aada3;
+  --bg-light: #f4f7f6;
+  --bot-bubble: #e9ecef;
+  --text-dark: #333;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: var(--bg-light);
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  font-family: "Roboto", sans-serif;
+  background-color: var(--bg-light);
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 /* Contenedor Principal */
 .chat-container {
-    width: 100%;
-    max-width: 600px;
-    height: 95vh;
-    background: white;
-    display: flex;
-    flex-direction: column;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    overflow: hidden;
+  width: 100%;
+  max-width: 600px;
+  height: 95vh;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 /* Cabecera */
 .header {
-    background: var(--usach-blue);
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    border-bottom: 2px solid rgba(0,0,0,0.1);
+  background: var(--usach-blue);
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 
 .header-logo {
-    height: 45px;      /* Altura fija para no romper el banner */
-    width: auto;       /* Mantiene la proporción original */
-    border-radius: 5px; /* Opcional: redondea un poco las esquinas del logo */
-    object-fit: contain;
+  height: 45px; /* Altura fija para no romper el banner */
+  width: auto; /* Mantiene la proporción original */
+  border-radius: 5px; /* Opcional: redondea un poco las esquinas del logo */
+  object-fit: contain;
 }
 
 .bot-icon {
-    font-size: 1.5rem; /* Ajusta el tamaño del emoji */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  font-size: 1.5rem; /* Ajusta el tamaño del emoji */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-h1 { font-size: 1.2rem; margin: 0; }
+h1 {
+  font-size: 1.2rem;
+  margin: 0;
+}
 
 /* Área de Mensajes */
 #messages {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    background: #ffffff;
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background: #ffffff;
 }
 
 /* Burbujas de Mensajes */
 .message {
-    padding: 12px 16px;
-    border-radius: 18px;
-    max-width: 85%;
-    font-size: 0.95rem;
-    line-height: 1.4;
-    word-wrap: break-word;
+  padding: 12px 16px;
+  border-radius: 18px;
+  max-width: 85%;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  word-wrap: break-word;
 }
 
 .bot {
-    align-self: flex-start;
-    background-color: var(--bot-bubble);
-    color: #000000 !important;
-    border-bottom-left-radius: 4px;
+  align-self: flex-start;
+  background-color: var(--bot-bubble);
+  color: #000000 !important;
+  border-bottom-left-radius: 4px;
 }
 
 .user {
-    align-self: flex-end;
-    background-color: var(--usach-orange);
-    color: white;
-    border-bottom-right-radius: 4px;
+  align-self: flex-end;
+  background-color: var(--usach-orange);
+  color: white;
+  border-bottom-right-radius: 4px;
 }
 
 /* Área de Entrada */
 .input-area {
-    padding: 20px;
-    border-top: 1px solid #eee;
-    display: flex;
-    gap: 10px;
+  padding: 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 10px;
 }
 
 input {
-    flex: 1;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    outline: none;
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
 }
 
 button {
-    background: var(--usach-blue);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
+  background: var(--usach-blue);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-button:hover { background: var(--usach-orange); }
+button:hover {
+  background: var(--usach-orange);
+}
 
 /* Animación de Carga y Cursor */
-.typing-indicator { padding: 10px 20px; }
-.typing-indicator span {
-    display: inline-block; width: 8px; height: 8px;
-    background: #ccc; border-radius: 50%; margin-right: 5px;
-    animation: bounce 1.3s infinite;
+.typing-indicator {
+  padding: 10px 20px;
 }
-.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+.typing-indicator span {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #ccc;
+  border-radius: 50%;
+  margin-right: 5px;
+  animation: bounce 1.3s infinite;
+}
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
 
 @keyframes bounce {
-    0%, 60%, 100% { transform: translateY(0); }
-    30% { transform: translateY(-6px); }
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-6px);
+  }
 }
 
 .cursor {
-    display: inline-block; width: 10px;
-    animation: blink 0.8s infinite;
-    color: var(--usach-orange);
+  display: inline-block;
+  width: 10px;
+  animation: blink 0.8s infinite;
+  color: var(--usach-orange);
 }
-@keyframes blink { 50% { opacity: 0; } }
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
 
 .chat-footer {
-    padding: 1px;
-    background-color: #f8f9fa; 
-    border-top: 1px solid #eee;
-    text-align: center;
-    font-size: 0.6rem; 
-    color: #666; 
-    line-height: 1.5;
-    letter-spacing: 0.5px;
-    
+  padding: 1px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #eee;
+  text-align: center;
+  font-size: 0.6rem;
+  color: #666;
+  line-height: 1.5;
+  letter-spacing: 0.5px;
 }
 
 .chat-footer p {
-    margin: 1px 0;
-   
+  margin: 1px 0;
 }
 
 .chat-footer strong {
-    color: #333; 
+  color: #333;
 }
 
 .my_email {
-    /* 1. Separación visual de la dirección */
-    margin-top: 15px !important;
-    padding-top: 5px;
-    
-    /* 2. Estilo de texto */
-    font-size: 0.65rem;
-    color: #777; /* Un gris intermedio */
-    text-transform: none !important; /* Aseguramos minúsculas */
-    letter-spacing: 0.2px;
+  /* 1. Separación visual de la dirección */
+  margin-top: 15px !important;
+  padding-top: 5px;
+
+  /* 2. Estilo de texto */
+  font-size: 0.65rem;
+  color: #777; /* Un gris intermedio */
+  text-transform: none !important; /* Aseguramos minúsculas */
+  letter-spacing: 0.2px;
 }
 
 .my_email strong {
-    /* Usamos tu color turquesa para destacar el rol */
-    color: #1aada3; 
-    font-weight: 700;
+  /* Usamos tu color turquesa para destacar el rol */
+  color: #1aada3;
+  font-weight: 700;
 }
 
-
 .my_email:hover {
-    color: #000; /* Se oscurece al pasar el mouse */
-    cursor: default;
-    transition: color 0.3s ease;
+  color: #000; /* Se oscurece al pasar el mouse */
+  cursor: default;
+  transition: color 0.3s ease;
 }
 
 .suggestions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 10px;
+  display: flex;
+  flex-direction: column; /* Organiza los botones en columna */
+  gap: 8px; /* Espacio vertical entre botones */
+  margin-top: 10px;
+  align-items: flex-start; /* Alinea los botones a la izquierda */
 }
-
 .suggestion-btn {
-    background-color: #f0f0f0;
-    border: 1px solid #dcdcdc;
-    border-radius: 15px;
-    padding: 6px 12px;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    color: #333;
-    font-family: 'Roboto', sans-serif;
+  background-color: #f0f0f0;
+  border: 1px solid #dcdcdc;
+  border-radius: 15px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+  font-family: "Roboto", sans-serif;
 }
 
 .suggestion-btn:hover {
-    background-color: #ea7600; /* Naranja USACH */
-    color: white;
-    border-color: #ea7600;
+  background-color: #ea7600; /* Naranja USACH */
+  color: white;
+  border-color: #ea7600;
 }
